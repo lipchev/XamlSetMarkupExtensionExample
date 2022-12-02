@@ -1,0 +1,68 @@
+﻿<UserControl x:Class="XamlSetMarkupExtensionExample.ExampleUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:properties="clr-namespace:XamlSetMarkupExtensionExample.Properties"
+             xmlns:local="clr-namespace:XamlSetMarkupExtensionExample.MarkupExtensions"
+             mc:Ignorable="d">
+    <StackPanel>
+
+        <!-- Error	XDG0014	Cannot find the member "ExampleKey" on the target type.	XamlSetMarkupExtensionExample -->
+        <!-- <GroupBox Header="0. This should display the value 'Example'"> -->
+        <!--     <TextBlock Text="{x:Static MemberType=properties:Resources, Member=ExampleKey}"/> -->
+        <!-- </GroupBox> -->
+
+        <GroupBox Header="1. This should display the value 'Example'">
+            <TextBlock Text="{x:Static properties:Resources.ExampleKey}"/>
+        </GroupBox>
+
+        <GroupBox Header="2. This should display the key 'ExampleKey'">
+            <TextBlock Text="{local:LocalizedText ResourceName={x:Static properties:Resources.ExampleKey}, SomeOtherOption=changing-this-causes-the-resource-name-to-be-resolved}"/>
+        </GroupBox>
+
+        <GroupBox Header="3. This should display the key 'ExampleKey'">
+            <TextBlock Text="{local:LocalizedText {x:Static properties:Resources.ExampleKey}}"/>
+        </GroupBox>
+
+        <GroupBox Header="4. This should display 'Header'">
+            <TextBlock Text="{local:BindingPath BindingPath={Binding RelativeSource={RelativeSource AncestorType=GroupBox}, Path=Header}}"/>
+        </GroupBox>
+        
+        <GroupBox Header="5. This should display 'ExampleKey'">
+            <TextBlock Text="{local:BindingPath BindingPath={Binding RelativeSource={RelativeSource AncestorType=properties:Resources}, Path=ExampleKey}}"/>
+        </GroupBox>
+
+        <GroupBox Header="6. This should display 'ExampleKey'">
+            <TextBlock Text="{local:BindingPath {Binding RelativeSource={RelativeSource AncestorType=properties:Resources}, Path=ExampleKey}}"/>
+        </GroupBox>
+
+        <GroupBox Header="7. This should display 'CustomPath'">
+            <TextBlock Text="{local:BindingPath BindingPath=CustomPath, MemberType=TextBlock}"/>
+        </GroupBox>
+
+        <GroupBox Header="8. This should display 'Header'">
+            <TextBlock Text="{local:BindingReference Binding={Binding RelativeSource={RelativeSource AncestorType=GroupBox}, Path=Header}}"/>
+        </GroupBox>
+        
+        <GroupBox Header="9. This should display 'ExampleKey'">
+            <TextBlock Text="{local:BindingReference Binding={Binding RelativeSource={RelativeSource AncestorType=properties:Resources}, Path=ExampleKey}}"/>
+        </GroupBox>
+
+        <GroupBox Header="10. This should display 'ExampleKey'">
+            <TextBlock Text="{local:BindingReference {Binding RelativeSource={RelativeSource AncestorType=properties:Resources}, Path=ExampleKey}}"/>
+        </GroupBox>
+
+        <!-- this works in runtime and is correctly displayed in the designer but with complaints from re-sharper: 
+        Invalid member type: expected type is 'StaticExtension', actual type is 'string'.   -->
+        <!-- <GroupBox Header="11. This should display 'ExampleKey'"> -->
+        <!--     <TextBlock Text="{local:StaticText ResourceKey={x:Static properties:Resources.ExampleKey}}"/> -->
+        <!-- </GroupBox> -->
+
+        <!-- this doesn't work at all (XDG0003	Object of type 'System.String' cannot be converted to type 'System.Windows.Markup.StaticExtension'.) -->
+        <!-- <GroupBox Header="12. This should display 'ExampleKey'"> -->
+        <!--     <TextBlock Text="{local:StaticText {x:Static properties:Resources.ExampleKey}}"/> -->
+        <!-- </GroupBox> -->
+
+    </StackPanel>
+</UserControl>
